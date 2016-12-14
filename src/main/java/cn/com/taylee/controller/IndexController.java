@@ -1,6 +1,8 @@
 package cn.com.taylee.controller;
 
 import cn.com.taylee.bean.StudyBean;
+import cn.com.taylee.service.StudyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,41 +19,25 @@ import java.util.*;
 @RequestMapping("/index")
 public class IndexController {
 
+    @Autowired
+    private StudyService studyService;
+
     @RequestMapping(value = "/main/{name}", method = RequestMethod.GET)
     public String mainPage(@PathVariable("name") String name, Model model){
-        model.addAttribute("test", name);
+        model.addAttribute("study", studyService.showIndex(name));
         return "index";
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public StudyBean getInfo(){
-        StudyBean studyBean = new StudyBean();
-        studyBean.setId("1");
-        studyBean.setName("aa");
-        studyBean.setTitle("bb");
-        studyBean.setContent("cc");
-        studyBean.setTime(new Date());
-        return studyBean;
+    public StudyBean getInfo(@PathVariable("id") String id){
+        return studyService.showInfo(id);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public Map<String,Object> listStudy(){
-        List<StudyBean> listRes = new ArrayList<StudyBean>();
-        for(int i = 0;i < 5;i ++){
-            StudyBean studyBean = new StudyBean();
-            studyBean.setId("id" + i);
-            studyBean.setName("name" + i);
-            studyBean.setTitle("title" + i);
-            studyBean.setContent("content" + i);
-            studyBean.setTime(new Date());
-            listRes.add(studyBean);
-        }
-        Map<String,Object> mapModel = new HashMap<String,Object>();
-        mapModel.put("status","true");
-        mapModel.put("result",listRes);
-        return mapModel;
+        return studyService.showList();
     }
 
 }

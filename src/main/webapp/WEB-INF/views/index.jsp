@@ -6,6 +6,11 @@
 <title>study-springmvc</title>
 </head>
 <body>
-<h1>hello ${test}</h1>
+    <h1>${study.name}</h1>
+    <ul>
+        <li>${study.title}</li>
+        <li>${study.content}</li>
+        <li>${study.time}</li>
+    </ul>
 </body>
 </html>
